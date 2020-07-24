@@ -1,0 +1,25 @@
+{% extends "header.html" %}         
+
+{% block content %}
+	<div class="alert alert-info" role="alert">
+		<h4 class="alert-heading">Σημαντική Πληροφορία!</h4>
+		<p>Μην ξεχάσετε να δηλώσετε την Διεύθυνσή σας πάνω στον Χάρτη.</p>
+		<hr>
+		<p class="mb-0">1) Στην αριστερή πλευρά του Χάρτη Επιλέψτε το κουμπί με τον Δείκτη (Draw a marker)</p>
+		<p class="mb-0">2) Τοποθετήστε τον Δείκτη στον Χάρτη, στην ακριβή σας Διεύθυνση</p>
+	</div>
+
+    <body>
+     	<h3>Εγγραφή Νέου Χρήστη</h3>
+    </body>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        {{ form.media }}
+
+        <button class="btn" style="background-color:orange; color:blue" type="submit"><strong>Εγγραφη</strong></button>
+    </form>
+
+  Εάν έχετε ήδη λογαριασμό, επιλέξτε <a href="/login"><strong>Είσοδος Χρήστη</strong></a>.
+{% endblock %}
+

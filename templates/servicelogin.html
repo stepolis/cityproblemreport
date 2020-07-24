@@ -1,0 +1,21 @@
+{% extends "header.html" %}         
+
+{% block content %}
+	<body>
+     <h4>Είσοδος σε Υπηρεσία</h4>
+  </body>
+	<form method="POST">
+      	{% csrf_token %}
+      	{{form.as_p}}
+
+      	<button class="btn" style="background-color:orange; color:blue" type="submit"><strong>Εισοδος</strong></button>
+  </form>
+
+  	Η Είσοδος στην Υπηρεσία είναι μόνο για πιστοποιημένους χρήστες!!!
+  	<br>
+  	Εάν δεν έχετε ήδη λογαριασμό, επικοινωνήστε με τον Διαχειριστή του Συστήματος για να αποκτήσετε.
+    <br>
+    <br>
+    Εάν είστε απλός Χρήστης και έχετε ήδη λογαριασμό, επιλέξτε <a href="/login"><strong>Είσοδος Χρήστη</strong></a>,<br> διαφορετικά επιλέξτε <a href="/register"><strong>Εγγραφή Χρήστη</strong></a> για να αποκτήσετε.
+{% endblock %}
+

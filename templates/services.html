@@ -1,0 +1,87 @@
+{% extends "header.html" %}         
+
+{% block content %}
+
+<html>
+{% load static %}
+{% load leaflet_tags %}
+<head>
+  {% leaflet_js %}
+  {% leaflet_css %}
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+  <title>City Problems Reporting</title>
+  <style type="text/css">
+    #gis {width: 100%;height:600px;}
+  </style>
+  {% block javascript %}
+  <link rel="stylesheet" type="text/css" href="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css' %}">
+  <script type="text/javascript" src="{% static 'dist/leaflet.ajax.js' %}" ></script>
+  <script type="text/javascript" src="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js' %}" ></script>
+
+  {% endblock %}
+</head>
+<body>
+<!--  Χάρτης με Συμβάντα   -->
+  <h2>{{service}}</h2>
+
+  {% leaflet_map "main" callback="ourfunction" %}
+  <script type="text/javascript">
+  function ourfunction(map, options){
+    var ourdata = '{% url "data" %}';
+    $.getJSON(ourdata, function(data){
+      L.geoJson(data).addTo(map).bindPopup(data.toString());
+    })
+  }
+  </script>
+
+<br>
+<!-- Καρτέλες με υπηρεσίες και προβλήματα -->
+{% if user.is_authenticated %}
+  <div class="row">
+    {% for se, num in incidents_num.items %}
+      <div class="col s12 m6 l4">
+        {% if num == 0 %}
+          <div class="card text-light bg-light mb-3" style="width: 18rem;">
+            <div class="card-header bg-info">Σύνολο Συμβάντων = {{num}}</div>
+            <div class="card-body text-dark">
+              <h4 class="card-title">{{se}}</h4>
+           
+            </div>
+          </div>
+        {% else %}
+          <div class="card text-light bg-light mb-3" style="width: 18rem;">
+            <div class="card-header bg-danger">Σύνολο Συμβάντων = {{num}}</div>
+            <div class="card-body text-dark">
+              <h4 class="card-title">{{se}}</h4>
+            </div>
+            <div class="card-footer bg-light">
+              <a href="{{se.problem_slug}}" class="card-link">Δείτε Αναλυτικά τα Προβλήματα</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="row">
+    {% for se, num in incidents_num.items %}
+      <div class="col s12 m6 l4">
+        <div class="card text-light bg-light mb-3" style="width: 18rem;">
+          <div class="card-header bg-info">Σύνολο Συμβάντων = {{num}}</div>
+          <div class="card-body text-dark">
+            <h4 class="card-title">{{se}}</h4>
+           
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+</body>
+</html>
+
+{% endblock %}
+

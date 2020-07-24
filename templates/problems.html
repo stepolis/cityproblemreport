@@ -1,0 +1,114 @@
+{% extends "header.html" %}         
+
+{% block content %}
+
+<html>
+{% load static %}
+{% load leaflet_tags %}
+<head>
+  {% leaflet_js %}
+  {% leaflet_css %}
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+  <title>City Problems Reporting</title>
+  <style type="text/css">
+    #gis {width: 100%;height:600px;}
+  </style>
+  {% block javascript %}
+  <link rel="stylesheet" type="text/css" href="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css' %}">
+  <script type="text/javascript" src="{% static 'dist/leaflet.ajax.js' %}" ></script>
+  <script type="text/javascript" src="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js' %}" ></script>
+
+  {% endblock %}
+</head>
+<body>
+<!--  Χάρτης με Συμβάντα  -->
+  <h2>{{problem}}</h2>
+
+  {% leaflet_map "main" callback="ourfunction" %}
+  <script type="text/javascript">
+  function ourfunction(map, options){
+    var ourdata = '{% url "data" %}';
+    $.getJSON(ourdata, function(data){
+      L.geoJson(data).addTo(map).bindPopup(data.toString());
+    })
+  }
+  </script>
+
+<br>
+<!-- Καρτέλες με υπηρεσίες και προβλήματα -->
+{% if user.is_authenticated %}
+  <div class="row">
+    {% for pr in problem_incidents %}
+      <div class="col s12 m6 l4">
+        {% if pr.status == 'SO' %}
+          <div class="card text-light bg-light mb-3" style="width: 18rem;">
+            <div class="card-header bg-success">Δείκτης Συμπαράστασης: {{pr.support_indicator}}</div>
+            <div class="card-body text-dark">
+              <h4 class="card-title">{{pr.address}}</h4>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Χρήστης: {{pr.user_username}}</li>
+                <li class="list-group-item">Ημερομηνία: {{pr.date}}</li>
+                <li class="list-group-item">Ώρα Καταχώρησης: {{pr.time}}</li>
+                <li class="list-group-item">Τοποθεσία: {{pr.location}}</li>
+              </ul>
+            </div>
+            <div class="card-footer bg-success">
+              <p class="card-text">Το Πρόβλημα έχει Λυθεί</p>
+            </div>
+          </div>
+        {% else %}
+          <div class="card text-light bg-light mb-3" style="width: 18rem;">
+            <div class="card-header bg-danger">Δείκτης Συμπαράστασης: {{pr.support_indicator}}</div>
+            <div class="card-body text-dark">
+              <h4 class="card-title">{{pr.address}}</h4>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Χρήστης: {{pr.user_username}}</li>
+                <li class="list-group-item">Ημερομηνία: {{pr.date}}</li>
+                <li class="list-group-item">Ώρα Καταχώρησης: {{pr.time}}</li>
+                <li class="list-group-item">Τοποθεσία: {{pr.location}}</li>
+              </ul>
+            </div>
+            {% for j in services %}
+              {% if j.username == user.username  %}
+                <div class="card-footer bg-light">
+                  <a href="{{pr.incident_slug}}" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Πατήστε εδώ για να χαρακτηριστεί το Πρόβλημα ως 'Λυμένο'.">Λύση Προβλήματος</a>
+                </div>
+              {% endif %}
+            {% endfor %}
+            {% for k in user_res %}
+              {% if k.username == user.username  %}
+                <div class="card-footer bg-light">
+                  <a href="{{pr.incident_slug}}" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Πατήστε εδώ για να αυξήσετε τον Δείκτη Συμπαράστασης.">Δηλώστε Συμπαράσταση</a>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+          
+        
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="row">
+    {% for pr in problem_incidents %}
+      <div class="col s12 m6 l4">
+        <div class="card text-light bg-light mb-3" style="width: 18rem;">
+          <div class="card-header bg-info">Συμβάντα σε Εξέλιξη = {{num}}</div>
+          <div class="card-body text-dark">
+            <h4 class="card-title">{{pr}}</h4>
+           
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+</body>
+</html>
+
+{% endblock %}
+

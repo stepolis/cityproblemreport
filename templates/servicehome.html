@@ -1,0 +1,23 @@
+{% extends "serviceheader.html" %}         
+
+{% block content %}
+
+<!-- Καρτέλες με υπηρεσίες και προβλήματα -->
+  <div class="row">
+  	{% for se in services %}
+	    <div class="col s12 m6 l4">
+	      <div class="card text-white bg-dark mb-3" style="width: 18rem;">
+	        <div class="card-body text-success">
+	        	<h4 class="card-title">{{se.service}}</h4>
+    			<p class="card-text"> </p>
+    			<a href="{{se.service_slug}}" class="btn btn-primary">Είσοδος στην Υπηρεσία</a>
+	       
+	        </div>
+	      </div>
+	    </div>
+    {% endfor %}
+  </div>
+
+
+{% endblock %}
+

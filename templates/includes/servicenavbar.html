@@ -1,0 +1,29 @@
+<!--Επάνω Menu - ServiceNavbar-->
+
+<nav class="navbar navbar-light" style="background-color: #84c6f6;">
+  <a class="navbar-brand" href="/" data-toggle="tooltip" data-placement="bottom" title="Πατήστε εδώ για Μετάβαση στην Αρχική Σελίδα"><h1>City Problems Reporting</h1></a>
+  <ul class="nav nav-pills justify-content-end">   
+    <li class="nav-item">
+      <a class="nav-link active" href="/addform" data-toggle="tooltip" data-placement="bottom" title="Για να εισάγετε Νέο Πρόβλημα πρέπει να έχετε συνδεθεί!!! Επιλέξτε 'Είσοδος Χρήστη'.">Εισαγωγή Νέου Προβλήματος</a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-light bg-light">
+  {% if user.is_authenticated %}
+    <ul class="nav nav-pills justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="/account" data-toggle="tooltip" data-placement="bottom" title="Πατήστε εδώ για να Διαχειριστείτε τον Λογαριασμό σας">{{user.username}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout" data-toggle="tooltip" data-placement="bottom" title="Πατήστε εδώ για να Αποσυνδεθείτε">Έξοδος</a>
+      </li>
+    </ul>
+  {% else %}
+    <ul class="nav nav-pills justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="/servicehome">Επιλέξτε την Υπηρεσία Σας για να συνδεθείτε</a>
+      </li>
+    </ul>
+  {% endif %}
+</nav>
+
