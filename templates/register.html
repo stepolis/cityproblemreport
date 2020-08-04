@@ -3,10 +3,10 @@
 {% block content %}
 	<div class="alert alert-info" role="alert">
 		<h4 class="alert-heading">Σημαντική Πληροφορία!</h4>
-		<p>Μην ξεχάσετε να δηλώσετε την Διεύθυνσή σας πάνω στον Χάρτη.</p>
+		<p>Μην ξεχάσετε να δηλώσετε την διεύθυνσή σας πάνω στον χάρτη.</p>
 		<hr>
-		<p class="mb-0">1) Στην αριστερή πλευρά του Χάρτη Επιλέψτε το κουμπί με τον Δείκτη (Draw a marker)</p>
-		<p class="mb-0">2) Τοποθετήστε τον Δείκτη στον Χάρτη, στην ακριβή σας Διεύθυνση</p>
+		<p class="mb-0">1) Στην αριστερή πλευρά του χάρτη επιλέξτε το κουμπί με τον δείκτη (Draw a marker).</p>
+		<p class="mb-0">2) Τοποθετήστε τον δείκτη στον χάρτη, στην ακριβή σας διεύθυνση.</p>
 	</div>
 
     <body>
@@ -14,10 +14,12 @@
     </body>
     <form method="POST">
         {% csrf_token %}
-        {{form.as_p}}
+        <table class="table table-hover">
+            {{form.as_table}}
+        </table> 
         {{ form.media }}
 
-        <button class="btn" style="background-color:orange; color:blue" type="submit"><strong>Εγγραφη</strong></button>
+        <button class="btn" style="background-color:orange; color:blue" type="submit"><strong>Εγγραφή</strong></button>
     </form>
 
   Εάν έχετε ήδη λογαριασμό, επιλέξτε <a href="/login"><strong>Είσοδος Χρήστη</strong></a>.

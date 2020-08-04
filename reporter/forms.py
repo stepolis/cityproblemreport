@@ -13,10 +13,10 @@ from bootstrap_datepicker_plus import *
 
 
 class NewUserForm(UserCreationForm):
-	email = forms.EmailField(required=True)
+	email = forms.EmailField(label=_("Email"), required=True, help_text=_("(Απαραίτητο! Εισάγετε το email σας σε έγκυρη μορφή.)"))
 	address = forms.PointField(label='Διεύθυνση Κατοικίας', widget=LeafletWidget())
-	password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput, help_text=_("Τουλάχιστον 8 χαρακτήρες!	Όχι ίδιο με προσωπικά στοιχεία!	Όχι μόνο αριθμούς!	Όχι συνηθισμένα passwords!"))
-	password2 = forms.CharField(label=_("Επαλήθευση Password"), widget=forms.PasswordInput, help_text=_("Εισάγετε το ίδιο password, όπως πριν, για επαλήθευση!"))
+	password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput, help_text=_("(Τουλάχιστον 8 χαρακτήρες!	Όχι ίδιο με προσωπικά στοιχεία!	Όχι μόνο αριθμούς!	Όχι συνηθισμένα passwords!)"))
+	password2 = forms.CharField(label=_("Επαλήθευση Password"), widget=forms.PasswordInput, help_text=_("(Ξανά-εισάγετε το ίδιο password, όπως πριν, για επαλήθευση!)"))
 
 	class Meta:
 		model = User_Res
@@ -25,12 +25,11 @@ class NewUserForm(UserCreationForm):
 		labels = {
 			"first_name": _('Όνομα'), 
 			"last_name": _('Επίθετο'), 
-			"password2": _('Επαλήθευση Password'),
-			"username": _('Username (Όνομα Χρήστη)'),
+			"username": _('Username'),
 			}
 		help_texts = {
-			"username": 'Απαραίτητο! Επιτρέπονται Ελληνικά, Λατινικά, Αριθμοί και τα Σύμβολα: @/./+/-/_ μόνο.',
-		}
+			"username": '(Απαραίτητο! Επιτρέπονται Ελληνικά, Λατινικά, Αριθμοί και τα Σύμβολα: @/./+/-/_ μόνο.)',
+			}
 		widgets = {
             "visit_time": DatePickerInput(format='%d/%m/%Y'),
             "address": LeafletWidget(),
@@ -49,8 +48,15 @@ class IncidentForm(ModelForm):
 
 	class Meta:
 		model = Incident
-		fields = ("location", "address", "date", "time", "support_indicator",
-				  "problem_kind", "user_username", "user_email", "status")
+		fields = ("location", "address", "problem_kind", "user_username", 
+				  "user_email", "date", "time", "support_indicator", "status")
+		help_texts = {
+			"address": '(Προαιρετικό! Αν θέλετε συμπληρώστε και ονομαστικά την διεύθυνση του προβλήματος.)',
+			"location": '(Απαραίτητο! Επιλέξτε πάνω στον χάρτη την ακριβή τοποθεσία του προβλήματος.)',
+			"problem_kind": '(Απαραίτητο! Επιλέξτε από τη λίστα το είδος του προβλήματος.)',
+			"user_username": '(Απαραίτητο! Συμπληρώστε το username σας.)',
+			"user_email": '(Προαιρετικό! Συμπληρώστε εδώ το email σας, αν θέλετε να εμφανίζετε στις αναλυτικές πληροφορίες του προβλήματος, που θα βλέπουν οι υπόλοιποι χρήστες.)',
+			}
 		widgets = {
 			"location": LeafletWidget(),
 			}

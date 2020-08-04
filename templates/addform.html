@@ -6,7 +6,9 @@
   </body>
 	<form method="POST">
       	{% csrf_token %}
-      	{{form.as_p}}
+      	<table class="table table-hover">
+            {{form.as_table}}
+        </table>
         {{ form.media }}
 
       	

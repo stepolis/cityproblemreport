@@ -1,4 +1,4 @@
-# cityproblemreport......Στέλιος Πολυχρόνης#
+# cityproblemreport......Στέλιος Πολυχρόνης
  
 1.	Στον φάκελο “...\cityproblemreport”  τρέχετε το command line (cmd.exe)
 2.	Στο παράθυρο που εμφανίζεται τρέχετε την εντολή “python manage.py runserver”

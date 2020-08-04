@@ -73,11 +73,11 @@ def single_slug(request, single_slug):
 				for u in User_Res.objects.all():
 					if u.username == k.user_username:
 						user = u
-						email_user(subject='Επίλυση Προβλήματος', message='Αγαπητέ Χρήστη {user.username}, το πρόβλημα {match_incident} που καταχωρίσατε έχει Λυθεί!!!', from_email=None)
-		messages.success(request, f"Η επιλογή σας Καταχωρήθηκε!!")
+						email_user(subject='Επίλυση Προβλήματος', message='Αγαπητέ χρήστη {user.username}, το πρόβλημα {match_incident} που καταχωρίσατε έχει λυθεί!!!', from_email=None)
+		messages.success(request, f"Η επιλογή σας καταχωρήθηκε!!")
 		return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
-	return HttpResponse(f"{single_slug} does not correspond to anything.")
+	return HttpResponse(f"{single_slug} δεν αντιστοιχεί σε κάτι!.")
 
 
 def homepage(request):
@@ -115,7 +115,7 @@ def servicehome(request):
 		matching_problems = Problems.objects.filter(service__service=se)
 		problems_per_service[se] = matching_problems
 
-	messages.info(request, f"Επιλέψτε την Υπηρεσία Σας για να συνδεθείτε.")
+	messages.info(request, f"Επιλέψτε την υπηρεσία σας για να συνδεθείτε.")
 	return render(request=request,
 				  template_name="servicehome.html",
 				  context={"services": Serv_Manager.objects.all,
@@ -131,9 +131,9 @@ def register(request):
 		if form.is_valid():
 			user = form.save()
 			username = form.cleaned_data.get('username')
-			messages.success(request, f"Ο Νέος Λογαριασμός Δημιουργήθηκε: {username}")
+			messages.success(request, f"Ο νέος λογαριασμός δημιουργήθηκε: {username}.")
 			login(request, user)
-			messages.success(request, f"Έχετε Συνδεθεί Επιτυχώς Ως {username}")
+			messages.success(request, f"Έχετε συνδεθεί επιτυχώς ως {username}.")
 			return redirect("home")
 		else:
 			for msg in form.error_messages:
@@ -149,7 +149,7 @@ def register(request):
 
 def logout_request(request):
 	logout(request)
-	messages.success(request, "Επιτυχής Έξοδος!")
+	messages.success(request, "Επιτυχής έξοδος!")
 	return redirect("home")
 
 
@@ -163,7 +163,7 @@ def login_request(request):
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user)
-				messages.success(request, f"Έχετε Συνδεθεί Επιτυχώς Ως {username}")
+				messages.success(request, f"Έχετε συνδεθεί επιτυχώς ως {username}.")
 				return redirect("home")
 			else:
 				messages.error(request, "Λανθασμένο username ή password!")
@@ -189,7 +189,7 @@ def servicelogin_request(request):
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user)
-				messages.info(request, f"Έχετε Συνδεθεί Επιτυχώς Ως {username}")
+				messages.info(request, f"Έχετε συνδεθεί επιτυχώς ως {username}")
 				return redirect('single_slug', single_slug=service_slug)
 			else:
 				messages.error(request, "Λανθασμένο username ή password!")
@@ -204,17 +204,17 @@ def servicelogin_request(request):
 	
 @login_required(login_url='login')
 def add_or_change_incident(request):
-	messages.info(request, f"Στο πεδίο 'Τοποθεσία Προβλήματος' επιλέξτε το κουμπί με τον 'Δείκτη' και τοποθετήστε τον πάνω στον Χάρτη.")
+	messages.info(request, f"Στο πεδίο 'Τοποθεσία Προβλήματος' επιλέξτε το κουμπί με τον δείκτη (Draw a marker) και τοποθετήστε τον πάνω στον χάρτη.")
 	if request.method == "POST":
 		form = IncidentForm(request, data=request.POST)
 		if form.is_valid():
 			username = form.cleaned_data.get('user_username')
 			incident = form.save()
-			messages.success(request, f"Το Συμβάν-Πρόβλημα Καταχωρήθηκε Επιτυχώς από τον Χρήστη: {username}")
+			messages.success(request, f"Το Συμβάν-Πρόβλημα καταχωρήθηκε επιτυχώς από τον χρήστη: {username}.")
 			return redirect("home")
 			
 		else:
-			messages.error(request, "Το Συμβάν-Πρόβλημα Δεν Καταχωρήθηκε. Προσπαθήστε Ξανά!")
+			messages.error(request, "Το Συμβάν-Πρόβλημα δεν καταχωρήθηκε. Προσπαθήστε ξανά!")
 
 
 	form = IncidentForm(request)
